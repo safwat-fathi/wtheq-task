@@ -33,7 +33,7 @@ const variants: Record<TVariant, Record<TColor, string>> = {
 const baseClasses =
   "inline-flex items-center justify-center rounded-md text-center font-medium hover:bg-opacity-90 transition-all duration-200";
 
-const loadingClasses = "pointer-events-none";
+const loadingClasses = "pointer-events-none opacity-50";
 
 const Button = ({
   children,
@@ -47,7 +47,9 @@ const Button = ({
   return (
     <button
       disabled={loading}
-      className={`${baseClasses} ${variants[variant][color]} ${sizes[size]} ${className}`}
+      className={`${baseClasses} ${variants[variant][color]} ${
+        sizes[size]
+      } ${className} ${loading && loadingClasses}`}
       {...props}
     >
       {loading ? "Loading..." : children}

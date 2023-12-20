@@ -1,5 +1,12 @@
 # Todo
 
+## Global
+
+- test responsive
+- write good readme 
+	- add project structure
+	- add dependencies list & why for every package
+
 ## Payment module
 
 - 
@@ -9,3 +16,14 @@
 - 
 
 ## Components
+
+- 
+
+## Server actions
+
+- test if server actions api requests is success
+- test if server actions api requests not visible in network tab
+
+## utils
+
+- formatters for (cvv - card number - expiry date)
