@@ -7,10 +7,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: {
     template: "%s | Wtheq merchant dashboard",
-    default: "Wtheq Seller",
+    default: "Wtheq merchant dashboard",
   },
-  description: "Wtheq Seller Admin Dashboard",
-  manifest: "/manifest.json",
+  description: "Wtheq merchant dashboard",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

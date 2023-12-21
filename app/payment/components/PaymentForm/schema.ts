@@ -19,7 +19,10 @@ const paymentSchema: yup.ObjectSchema<CreditCardFormData> = yup.object().shape({
       value => expirationDate(value).isValid
     )
     .required("Expiry date is required"),
-  cardHolderName: yup.string().required("Card holder name is required"),
+  cardHolderName: yup
+    .string()
+    .required("Card holder name is required")
+    .min(4, "Card holder name seems to be invalid"),
   cvv: yup
     .string()
     .test("valid-cvv", "Invalid CVV", value => cvv(value).isValid)

@@ -1,6 +1,8 @@
-import { Props } from "@/types/components/text-input";
+import { formatCardNumber } from "@/lib/utils/payment";
+import { Props } from "@/types/components/i-input";
 import { ErrorMessage } from "@hookform/error-message";
 import { useFormContext } from "react-hook-form";
+import { number as cardNumber } from "card-validator";
 
 const defaultClasses = `w-full rounded-lg border py-4 pl-6 pr-10 bg-transparent dark:bg-form-input focus-visible:shadow-none outline-none`;
 const invalidClasses =
@@ -8,9 +10,16 @@ const invalidClasses =
 const validClasses =
   "border-stroke focus:border-primary dark:border-form-strokedark dark:focus:border-primary";
 
-const InputField = ({ name, label, required, ...props }: Props) => {
+const InputField = ({
+  name,
+  label,
+  required,
+  formatFunction,
+  ...props
+}: Props) => {
   const {
     register,
+    setValue,
     formState: { errors },
   } = useFormContext();
 
@@ -40,7 +49,7 @@ const InputField = ({ name, label, required, ...props }: Props) => {
         errors={errors}
         name={name}
         render={({ message }) => (
-          <p className="text-danger text-sm">{message}</p>
+          <p className="text-danger text-sm mt-1">{message}</p>
         )}
       />
     </div>

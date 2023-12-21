@@ -1,4 +1,4 @@
-const formatExpiryDate = (expiryDate: string): string => {
+export const formatExpiryDate = (expiryDate: string): string => {
   const cleanedExpiryDate = expiryDate.replace(/[^0-9]/g, "");
   const formattedExpiryDate = cleanedExpiryDate
     .slice(0, 4)
@@ -8,12 +8,12 @@ const formatExpiryDate = (expiryDate: string): string => {
   return formattedExpiryDate;
 };
 
-const formatCVV = (cvv: string): string => {
+export const formatCVV = (cvv: string): string => {
   const cleanedCVV = cvv.replace(/[^0-9]/g, "");
   return cleanedCVV;
 };
 
-const formatCardNumber = (
+export const formatCardNumber = (
   cardNumber: string,
   cardType: string | undefined
 ): string => {
@@ -30,7 +30,7 @@ const formatCardNumber = (
     .join("");
 };
 
-const getGapsForCardType = (cardType: string): number[] => {
+export const getGapsForCardType = (cardType: string): number[] => {
   // Define the positions of gaps based on the card type
   if (cardType === "mastercard" || cardType === "visa") {
     return [4, 9, 14];

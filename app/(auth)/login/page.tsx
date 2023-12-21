@@ -2,7 +2,6 @@ import Image from "next/image";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
 import LoginForm from "./components/LoginForm";
-import AuthImage from "../components/AuthImage";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
@@ -40,7 +39,7 @@ const Login = async () => {
               />
             </div>
 
-            <AuthImage />
+            {/* <AuthImage /> */}
           </div>
         </div>
 

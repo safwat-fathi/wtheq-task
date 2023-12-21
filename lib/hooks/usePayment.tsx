@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
 import { number as cardNumber } from "card-validator";
+import {
+  formatCVV,
+  formatCardNumber,
+  formatExpiryDate,
+} from "../utils/payment";
 
 const usePayment = () => {
   const [formattedCardNumber, setFormattedCardNumber] = useState("");
@@ -27,6 +32,7 @@ const usePayment = () => {
     const inputCardNumber = event.target.value.replace(/\s/g, ""); // Remove existing spaces
     const cardType = cardNumber(inputCardNumber).card?.type;
     const formattedNumber = formatCardNumber(inputCardNumber, cardType);
+
     setFormattedCardNumber(formattedNumber);
   };
 
