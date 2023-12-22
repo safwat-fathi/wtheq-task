@@ -1,20 +1,42 @@
 "use client";
 
 import Button from "@/lib/ui/components/Button";
-import usePayment from "@/lib/hooks/usePayment";
+import usePaymentForm from "@/lib/hooks/usePaymentForm";
 import { CreditCardType } from "@/types/hooks/i-use-payment";
 import InputField from "@/lib/ui/components/InputField";
+import Image from "next/image";
 
 const renderCardType = (cardType: string | undefined) => {
   switch (cardType) {
     case CreditCardType.Visa:
-      return "Visa";
+      return <Image src="/images/visa.svg" alt="Visa" width={48} height={48} />;
     case CreditCardType.Mastercard:
-      return "Mastercard";
+      return (
+        <Image
+          src="/images/mastercard.svg"
+          alt="Mastercard"
+          width={48}
+          height={48}
+        />
+      );
     case CreditCardType.AmericanExpress:
-      return "American Express";
+      return (
+        <Image
+          src="/images/american-express.svg"
+          alt="American Express"
+          width={48}
+          height={48}
+        />
+      );
     default:
-      return "Unknown";
+      return (
+        <Image
+          src="/images/credit-card.png"
+          alt="unknown credit card"
+          width={48}
+          height={48}
+        />
+      );
   }
 };
 
@@ -31,7 +53,7 @@ const PaymentForm = () => {
     handleCVVChange,
     handleExpiryDateChange,
     handleCardHolderNameChange,
-  } = usePayment();
+  } = usePaymentForm();
 
   return (
     <form
@@ -41,21 +63,23 @@ const PaymentForm = () => {
       }}
       className="flex gap-4 flex-col"
     >
-      <div>{renderCardType(cardType)}</div>
-
-      <InputField
-        required
-        name="cardNum"
-        onChange={handleCardNumberChange}
-        value={formattedCardNumber}
-        placeholder="Card Number"
-        errors={errors}
-      />
+      <div className="w-12 h-12">{renderCardType(cardType)}</div>
 
       <div>
         <InputField
           required
-          name="date"
+          name="cardNumber"
+          onChange={handleCardNumberChange}
+          value={formattedCardNumber}
+          placeholder="Card Number"
+          errors={errors}
+        />
+      </div>
+
+      <div>
+        <InputField
+          required
+          name="expiryDate"
           onChange={handleExpiryDateChange}
           value={formattedExpiryDate}
           errors={errors}
@@ -77,7 +101,7 @@ const PaymentForm = () => {
       <div>
         <InputField
           required
-          name="name"
+          name="cardHolderName"
           onChange={handleCardHolderNameChange}
           value={cardHolderName}
           errors={errors}

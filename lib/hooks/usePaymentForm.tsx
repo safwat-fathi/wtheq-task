@@ -6,11 +6,9 @@ import {
   formatCardNumber,
   formatExpiryDate,
 } from "../utils/payment";
+import { CreditCardFormData } from "@/app/payment/components/PaymentForm/types";
 
-type TPaymentErrors = Record<
-  "name" | "cardNum" | "date" | "cvv",
-  string | null
->;
+type TPaymentErrors = Record<keyof CreditCardFormData, string | null>;
 
 const usePayment = () => {
   const [formattedCardNumber, setFormattedCardNumber] = useState("");
@@ -19,42 +17,48 @@ const usePayment = () => {
   const [cardHolderName, setCardHolderName] = useState("");
   const [cardType, setCardType] = useState<string | undefined>("");
   const [errors, setErrors] = useState<TPaymentErrors>({
-    cardNum: null,
+    cardNumber: null,
     cvv: null,
-    date: null,
-    name: null,
+    expiryDate: null,
+    cardHolderName: null,
   });
 
   const handleSubmit = () => {
     let validateErrors: TPaymentErrors = {
-      cardNum: null,
+      cardNumber: null,
       cvv: null,
-      date: null,
-      name: null,
+      expiryDate: null,
+      cardHolderName: null,
     };
 
     // validate card number
     if (!cardNumber(formattedCardNumber).isValid) {
       validateErrors = {
         ...validateErrors,
-        cardNum: "Card number is not valid",
+        cardNumber: "Card number is not valid",
       };
     }
 
     if (!formattedCardNumber.length) {
       validateErrors = {
         ...validateErrors,
-        cardNum: "Card number is required",
+        cardNumber: "Card number is required",
       };
     }
 
     // validate expiry date
     if (!expirationDate(formattedExpiryDate).isValid) {
-      validateErrors = { ...validateErrors, date: "Expiry date is not valid" };
+      validateErrors = {
+        ...validateErrors,
+        expiryDate: "Expiry date is not valid",
+      };
     }
 
     if (!formattedExpiryDate.length) {
-      validateErrors = { ...validateErrors, date: "Expiry date is required" };
+      validateErrors = {
+        ...validateErrors,
+        expiryDate: "Expiry date is required",
+      };
     }
 
     // validate cvv
@@ -70,14 +74,14 @@ const usePayment = () => {
     if (cardHolderName.length < 5) {
       validateErrors = {
         ...validateErrors,
-        name: "Card holder name must be at least 5 characters long",
+        cardHolderName: "Card holder name must be at least 5 characters long",
       };
     }
 
     if (!cardHolderName.length) {
       validateErrors = {
         ...validateErrors,
-        name: "Card holder name is required",
+        cardHolderName: "Card holder name is required",
       };
     }
 
@@ -89,22 +93,28 @@ const usePayment = () => {
   ) => {
     const name = event.target.value;
 
+    const alphabeticValue = name.replace(/[^a-zA-Z]/g, "");
+
     // if (name.length < 5)
     //   setErrors({ ...errors, name: "Name must be at least 5 characters long" });
-    if (!name.length) setErrors({ ...errors, name: "Name is required" });
-    else setErrors({ ...errors, name: null });
+    if (!alphabeticValue.length)
+      setErrors({ ...errors, cardHolderName: "Card holder name is required" });
+    else setErrors({ ...errors, cardHolderName: null });
 
-    setCardHolderName(name);
+    setCardHolderName(alphabeticValue);
   };
 
   const handleCVVChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputCVV = event.target.value;
-    const formattedCVV = formatCVV(inputCVV);
+
+    const numericValue = inputCVV.replace(/[^0-9]/g, "");
+
+    const formattedCVV = formatCVV(numericValue);
 
     setFormattedCVV(formattedCVV);
 
     if (!cvv(formattedCVV).isValid)
-      setErrors({ ...errors, cvv: "CVV is required" });
+      setErrors({ ...errors, cvv: "CVV is not valid" });
     else setErrors({ ...errors, cvv: null });
   };
 
@@ -112,18 +122,22 @@ const usePayment = () => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const inputExpiryDate = event.target.value;
-    const formattedDate = formatExpiryDate(inputExpiryDate);
+
+    const numericValue = inputExpiryDate.replace(/[^0-9]/g, "");
+
+    const formattedDate = formatExpiryDate(numericValue);
     setFormattedExpiryDate(formattedDate);
 
-    if (!expirationDate(inputExpiryDate).isValid)
-      setErrors({ ...errors, date: "Expiry date is not valid" });
-    else setErrors({ ...errors, date: null });
+    if (!expirationDate(numericValue).isValid)
+      setErrors({ ...errors, expiryDate: "Expiry date is not valid" });
+    else setErrors({ ...errors, expiryDate: null });
   };
 
   const handleCardNumberChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const value = event.target.value;
+
     const inputCardNumber = value.replace(/\s/g, ""); // Remove existing spaces
     const cardType = cardNumber(inputCardNumber).card?.type;
     const formattedNumber = formatCardNumber(inputCardNumber, cardType);
@@ -132,8 +146,8 @@ const usePayment = () => {
     setFormattedCardNumber(formattedNumber);
 
     if (!cardNumber(inputCardNumber).isValid)
-      setErrors({ ...errors, cardNum: "Card number is not valid" });
-    else setErrors({ ...errors, cardNum: null });
+      setErrors({ ...errors, cardNumber: "Card number is not valid" });
+    else setErrors({ ...errors, cardNumber: null });
   };
 
   useEffect(() => {

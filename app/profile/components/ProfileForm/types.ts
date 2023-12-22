@@ -1,7 +1,7 @@
 import { GenderType } from "@/types/models";
 
-export interface UserFormData {
+export interface ProfileFormData {
   name: string;
-  gender: GenderType;
   dob: string;
+  gender: GenderType;
 }

@@ -1,5 +1,4 @@
 import { usePathname } from "next/navigation";
-import SidebarLinkGroup from "./SidebarLinkGroup";
 import Link from "next/link";
 import { Dispatch, SetStateAction } from "react";
 

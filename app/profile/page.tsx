@@ -1,10 +1,9 @@
 import { Metadata } from "next";
-import UserForm from "./components/UserForm";
+import UserForm from "./components/ProfileForm";
 
 export const metadata: Metadata = {
   title: "Profile",
   description: "This is Profile page for Wtheq merchant dashboard",
-  // other metadata
 };
 
 const Profile = () => {
