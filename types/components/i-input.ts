@@ -3,5 +3,5 @@ import { InputHTMLAttributes } from "react";
 export type Props = InputHTMLAttributes<HTMLInputElement> & {
   name: string;
   label?: string;
-  formatFunction?: (...arg: any) => any;
+  errors: Record<string, string | null>;
 };
