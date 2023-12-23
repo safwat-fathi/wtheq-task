@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { Dispatch, SetStateAction } from "react";
 import { SidebarProps } from "../Sidebar";
 
 const Header = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
@@ -51,12 +50,7 @@ const Header = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           </button>
 
           <Link className="block flex-shrink-0 lg:hidden" href="/">
-            <Image
-              width={32}
-              height={32}
-              src={"/images/logo/logo-icon.svg"}
-              alt="Logo"
-            />
+            <h1 className="text-2xl font-bold">Wtheq</h1>
           </Link>
         </div>
       </div>

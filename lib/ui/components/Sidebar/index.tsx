@@ -77,7 +77,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
         <button
           ref={trigger}
-          onClick={() => setSidebarOpen(!sidebarOpen)}
+          onClick={() => {
+            console.log("awdawd");
+            setSidebarOpen(!sidebarOpen);
+          }}
           className="block lg:hidden"
         >
           <svg
