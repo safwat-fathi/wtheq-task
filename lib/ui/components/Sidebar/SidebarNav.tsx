@@ -1,13 +1,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Dispatch, SetStateAction } from "react";
 
-interface Props {
-  sidebarExpanded: boolean;
-  setSidebarExpanded: Dispatch<SetStateAction<boolean>>;
-}
-
-const SidebarNav = ({ sidebarExpanded, setSidebarExpanded }: Props) => {
+const SidebarNav = () => {
   const pathname = usePathname();
 
   return (

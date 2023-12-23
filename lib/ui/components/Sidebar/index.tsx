@@ -1,11 +1,18 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Link from "next/link";
 import SidebarNav from "./SidebarNav";
 
-interface SidebarProps {
+export interface SidebarProps {
   sidebarOpen: boolean;
-  setSidebarOpen: (arg: boolean) => void;
+  setSidebarOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
@@ -71,8 +78,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <button
           ref={trigger}
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          aria-controls="sidebar"
-          aria-expanded={sidebarOpen}
           className="block lg:hidden"
         >
           <svg
@@ -92,10 +97,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       </div>
 
       {/* sidebar nav */}
-      <SidebarNav
-        sidebarExpanded={sidebarExpanded}
-        setSidebarExpanded={setSidebarExpanded}
-      />
+      <SidebarNav />
 
       {/* footer */}
       <footer className="mt-auto py-4 px-4 lg:px-6">

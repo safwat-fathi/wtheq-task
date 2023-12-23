@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, ReactNode } from "react";
+import { useState, ReactNode } from "react";
 import dynamic from "next/dynamic";
 import SidebarLoader from "../../components/Loaders/SidebarLoader";
 import Header from "../../components/Header";
