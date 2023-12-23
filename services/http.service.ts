@@ -1,10 +1,11 @@
-import { getSessionAction } from "@/actions";
+import { getTokenAction, onLogoutAction } from "@/actions/auth";
+import { HttpError } from "@/lib/classes/http-error";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL_API || "";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_DEV_API || "";
 
 class HttpService {
   private _url: string;
-  private _session: Session | null = null;
+  private _token: string | null = null;
 
   constructor(url: string) {
     this._url = url;
@@ -12,43 +13,35 @@ class HttpService {
 
   private async _appFetch(route: string, options: RequestInit = {}) {
     try {
-      this._session = await getSessionAction();
+      this._token = await getTokenAction();
 
       const fullURL = BASE_URL + this._url + route;
 
-      if (this._session) {
+      if (this._token) {
         options.headers = {
           ...options.headers,
-          Authorization: `Bearer ${this._session.access_token}`,
+          Authorization: `Bearer ${this._token}`,
         };
       }
 
       const response = await fetch(fullURL, options);
 
       if (!response.ok) {
-        throw new Error("Something went wrong");
+        throw new HttpError(response.status, response.statusText);
       }
 
       if (response.status === 401) {
-        authApi.logout();
+        await onLogoutAction();
       }
 
       return response;
     } catch (err) {
-      throw err;
+      throw new HttpError(500, "Something went wrong");
     }
   }
 
-  protected async get<T>(
-    route: string,
-    params?: IParams,
-    options?: RequestInit
-  ): Promise<T> {
-    const response = await this._appFetch(
-      route,
-      { ...options, method: "GET" },
-      params
-    );
+  protected async get<T>(route: string, options?: RequestInit): Promise<T> {
+    const response = await this._appFetch(route, { ...options, method: "GET" });
 
     const data = await response.json();
 
@@ -74,37 +67,24 @@ class HttpService {
   protected async put<T>(
     body: any,
     route: string,
-    params?: IParams,
     options?: RequestInit
   ): Promise<T> {
-    const response = await this._appFetch(
-      route,
-      {
-        ...options,
-        body,
-        method: "PUT",
-      },
-      params
-    );
+    const response = await this._appFetch(route, {
+      ...options,
+      body,
+      method: "PUT",
+    });
 
     const data = await response.json();
 
     return data;
   }
 
-  protected async delete(
-    route: string,
-    params?: IParams,
-    options?: RequestInit
-  ) {
-    const response = await this._appFetch(
-      route,
-      {
-        ...options,
-        method: "DELETE",
-      },
-      params
-    );
+  protected async delete(route: string, options?: RequestInit) {
+    const response = await this._appFetch(route, {
+      ...options,
+      method: "DELETE",
+    });
 
     const data = await response.json();
 
@@ -115,6 +95,6 @@ class HttpService {
 export default HttpService;
 
 // example:
-// const httpService = new HttpService("/api/v1")
-// const data = await httpService.get("/users")
-// const data = await httpService.post({ email: "XXXXXXXXXXXXXX" }, "/users")
+// const httpService = new HttpService("/v1")
+// const data = await httpService.get("/products")
+// const data = await httpService.post({ price: 'XX', name: "XXXXXXXXXXXXXX" }, "/products")

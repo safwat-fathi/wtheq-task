@@ -3,6 +3,7 @@
 import { useState, useEffect, ReactNode } from "react";
 import dynamic from "next/dynamic";
 import SidebarLoader from "../../components/Loaders/SidebarLoader";
+import Header from "../../components/Header";
 
 const Sidebar = dynamic(() => import("@/lib/ui/components/Sidebar"), {
   ssr: false,
@@ -18,6 +19,7 @@ export default function UserLayout({ children }: { children: ReactNode }) {
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
         <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
           {children}
         </div>
       </div>
