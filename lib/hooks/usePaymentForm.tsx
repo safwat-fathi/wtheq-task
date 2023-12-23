@@ -6,9 +6,9 @@ import {
   formatCardNumber,
   formatExpiryDate,
 } from "../utils/payment";
-import { CreditCardFormData } from "@/app/payment/components/PaymentForm/types";
+import { CreditCard } from "@/types/models";
 
-type TPaymentErrors = Record<keyof CreditCardFormData, string | null>;
+type TPaymentErrors = Record<keyof Omit<CreditCard, "cardType">, string | null>;
 
 const usePayment = () => {
   const [formattedCardNumber, setFormattedCardNumber] = useState("");
@@ -86,6 +86,20 @@ const usePayment = () => {
     }
 
     setErrors(validateErrors);
+
+    if (Object.values(validateErrors).some(error => error)) return null;
+
+    let data = {
+      cardNumber: formattedCardNumber,
+      expiryDate: formattedExpiryDate,
+      cvv: formattedCVV,
+      cardHolderName,
+      cardType,
+    };
+
+    // resetState();
+
+    return data;
   };
 
   const handleCardHolderNameChange = (
@@ -93,7 +107,7 @@ const usePayment = () => {
   ) => {
     const name = event.target.value;
 
-    const alphabeticValue = name.replace(/[^a-zA-Z]/g, "");
+    const alphabeticValue = name.replace(/[^a-zA-Z\s]/g, "");
 
     // if (name.length < 5)
     //   setErrors({ ...errors, name: "Name must be at least 5 characters long" });
@@ -150,12 +164,17 @@ const usePayment = () => {
     else setErrors({ ...errors, cardNumber: null });
   };
 
+  const resetState = () => {
+    setCardType("");
+    setFormattedCardNumber("");
+    setFormattedExpiryDate("");
+    setFormattedCVV("");
+    setCardHolderName("");
+  };
+
   useEffect(() => {
     return () => {
-      setCardHolderName("");
-      setCardType("");
-      setFormattedCVV("");
-      setFormattedCardNumber("");
+      resetState();
     };
   }, []);
 

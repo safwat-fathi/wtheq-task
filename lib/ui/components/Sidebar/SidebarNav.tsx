@@ -1,5 +1,6 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import routes from "@/routes";
 
 const SidebarNav = () => {
   const pathname = usePathname();
@@ -17,9 +18,9 @@ const SidebarNav = () => {
           <ul className="mb-2 flex flex-col gap-1.5">
             <li>
               <Link
-                href="/"
+                href={routes.home}
                 className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                  pathname === "/" && "bg-graydark dark:bg-meta-4"
+                  pathname === routes.home && "bg-graydark dark:bg-meta-4"
                 }`}
               >
                 <svg
@@ -58,9 +59,10 @@ const SidebarNav = () => {
           <ul className="mb-2 flex flex-col gap-1.5">
             <li>
               <Link
-                href="/payment"
+                href={routes.payment}
                 className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                  pathname.includes("payment") && "bg-graydark dark:bg-meta-4"
+                  pathname.includes(routes.payment) &&
+                  "bg-graydark dark:bg-meta-4"
                 }`}
               >
                 <svg
@@ -84,9 +86,10 @@ const SidebarNav = () => {
           <ul className="mb-2 flex flex-col gap-1.5">
             <li>
               <Link
-                href="/profile"
+                href={routes.profile}
                 className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                  pathname.includes("profile") && "bg-graydark dark:bg-meta-4"
+                  pathname.includes(routes.profile) &&
+                  "bg-graydark dark:bg-meta-4"
                 }`}
               >
                 <svg

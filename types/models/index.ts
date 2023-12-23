@@ -8,3 +8,11 @@ export interface User {
   gender: GenderType;
   dob: string;
 }
+
+export interface CreditCard {
+  cardNumber: string;
+  expiryDate: string;
+  cardHolderName: string;
+  cvv: string;
+  cardType?: string;
+}

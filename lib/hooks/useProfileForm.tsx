@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { GenderType } from "@/types/models";
-import { ProfileFormData } from "@/app/profile/components/ProfileForm/types";
+import { GenderType, User } from "@/types/models";
 import { isValidDate } from "../utils/string";
 
-type TPaymentErrors = Record<keyof ProfileFormData, string | null>;
+type TPaymentErrors = Record<keyof User, string | null>;
 
 const useProfileForm = () => {
   const [name, setName] = useState("");
@@ -44,12 +43,20 @@ const useProfileForm = () => {
     }
 
     setErrors(validateErrors);
+
+    if (Object.values(validateErrors).some(error => error)) return null;
+
+    let data = { dob, gender, name };
+
+    resetState();
+
+    return data;
   };
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
 
-    const alphabeticValue = name.replace(/[^a-zA-Z]/g, "");
+    const alphabeticValue = name.replace(/[^a-zA-Z\s]/g, "");
 
     if (!name.length) setErrors({ ...errors, name: "Name is required" });
     else setErrors({ ...errors, name: null });
@@ -74,11 +81,15 @@ const useProfileForm = () => {
     setDob(date);
   };
 
+  const resetState = () => {
+    setDob("");
+    setGender(GenderType.Male);
+    setName("");
+  };
+
   useEffect(() => {
     return () => {
-      setDob("");
-      setGender(GenderType.Male);
-      setName("");
+      resetState();
     };
   }, []);
 

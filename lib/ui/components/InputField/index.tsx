@@ -22,6 +22,7 @@ const InputField = ({ name, label, required, errors, ...props }: Props) => {
 
       <input
         {...props}
+        autoComplete="on"
         className={`${defaultClasses} ${
           errors[name] ? invalidClasses : validClasses
         }`}

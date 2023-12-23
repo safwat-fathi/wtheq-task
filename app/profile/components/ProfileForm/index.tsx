@@ -4,8 +4,13 @@ import Button from "@/lib/ui/components/Button";
 import useProfileForm from "@/lib/hooks/useProfileForm";
 import InputField from "@/lib/ui/components/InputField";
 import { GenderType } from "@/types/models";
+import profileService from "@/services/profile.service";
+import { toast } from "react-toastify";
+import { useState } from "react";
 
 const ProfileForm = () => {
+  const [loading, setLoading] = useState(false);
+
   const {
     name,
     dob,
@@ -17,14 +22,31 @@ const ProfileForm = () => {
     handleGenderChange,
   } = useProfileForm();
 
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    try {
+      e.preventDefault();
+
+      setLoading(true);
+
+      const data = handleSubmit();
+
+      if (!data) return;
+
+      const resData = await profileService.update(data);
+
+      if (resData.success) toast.success(resData.message);
+
+      if (!resData.success) toast.error(resData.message);
+
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      throw err;
+    }
+  };
+
   return (
-    <form
-      onSubmit={e => {
-        e.preventDefault();
-        handleSubmit();
-      }}
-      className="flex gap-4 flex-col"
-    >
+    <form onSubmit={onSubmit} className="flex gap-4 flex-col">
       <div>
         <InputField
           name="name"
@@ -75,7 +97,7 @@ const ProfileForm = () => {
       </div>
 
       <div>
-        <Button type="submit" size="lg" className="w-full">
+        <Button type="submit" loading={loading} size="lg" className="w-32">
           Submit
         </Button>
       </div>

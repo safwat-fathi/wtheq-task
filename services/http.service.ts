@@ -14,21 +14,24 @@ class HttpService {
   private async _appFetch(route: string, options: RequestInit = {}) {
     try {
       this._token = await getTokenAction();
+      console.log("🚀 ~ _appFetch ~ this._token:", this._token);
 
       const fullURL = BASE_URL + this._url + route;
 
       if (this._token) {
         options.headers = {
           ...options.headers,
+          Accept: "application/json",
+          // "Content-Type": "application/json; charset=UTF-8",
           Authorization: `Bearer ${this._token}`,
         };
       }
 
       const response = await fetch(fullURL, options);
 
-      if (!response.ok) {
-        throw new HttpError(response.status, response.statusText);
-      }
+      // if (!response.ok) {
+      //   throw new HttpError(response.status, response.statusText);
+      // }
 
       if (response.status === 401) {
         await onLogoutAction();
@@ -55,7 +58,7 @@ class HttpService {
   ): Promise<T> {
     const response = await this._appFetch(route, {
       ...options,
-      body,
+      body: JSON.stringify(body),
       method: "POST",
     });
 

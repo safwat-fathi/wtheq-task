@@ -3,3 +3,5 @@ const routes: Routes = {
   payment: "/payment",
   profile: "/profile",
 };
+
+export default routes;

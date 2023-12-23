@@ -5,6 +5,9 @@ import usePaymentForm from "@/lib/hooks/usePaymentForm";
 import { CreditCardType } from "@/types/hooks/i-use-payment";
 import InputField from "@/lib/ui/components/InputField";
 import Image from "next/image";
+import paymentService from "@/services/payment.service";
+import { toast } from "react-toastify";
+import { useState } from "react";
 
 const renderCardType = (cardType: string | undefined) => {
   switch (cardType) {
@@ -28,6 +31,15 @@ const renderCardType = (cardType: string | undefined) => {
           height={48}
         />
       );
+    case CreditCardType.UnionPay:
+      return (
+        <Image
+          src="/images/unionpay.svg"
+          alt="UnionPay"
+          width={48}
+          height={48}
+        />
+      );
     default:
       return (
         <Image
@@ -41,6 +53,8 @@ const renderCardType = (cardType: string | undefined) => {
 };
 
 const PaymentForm = () => {
+  const [loading, setLoading] = useState(false);
+
   const {
     handleSubmit,
     errors,
@@ -55,14 +69,32 @@ const PaymentForm = () => {
     handleCardHolderNameChange,
   } = usePaymentForm();
 
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    try {
+      e.preventDefault();
+
+      setLoading(true);
+
+      const data = handleSubmit();
+
+      if (!data) return; // return early if no data to submit.
+
+      const resData = await paymentService.add(data);
+      console.log("🚀 ~ onSubmit ~ resData:", resData);
+
+      if (resData.success) toast.success(resData.message);
+
+      if (!resData.success) toast.error(resData.message);
+
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      throw err;
+    }
+  };
+
   return (
-    <form
-      onSubmit={e => {
-        e.preventDefault();
-        handleSubmit();
-      }}
-      className="flex gap-4 flex-col"
-    >
+    <form onSubmit={onSubmit} className="flex gap-4 flex-col">
       <div className="w-12 h-12">{renderCardType(cardType)}</div>
 
       <div>
@@ -110,7 +142,7 @@ const PaymentForm = () => {
       </div>
 
       <div>
-        <Button type="submit" size="lg" className="w-full">
+        <Button type="submit" loading={loading} size="lg" className="w-32">
           Submit
         </Button>
       </div>

@@ -8,7 +8,7 @@ type TColor = "primary" | "secondary" | "success" | "error";
 type TSize = "sm" | "md" | "lg";
 type TVariant = "contained" | "outlined";
 
-// * business types
+// * routes types
 // -------------
 interface Routes {
   profile: string;
