@@ -1,8 +1,8 @@
-# Next.js Merchant Dashboard
+# Wtheq Merchant Dashboard
 
 ## Project Overview
 
-This Next.js project is designed to implement a simple application with a two-side menu navigation system. The application consists of two main pages: the Profile page and the Payment page. Users can easily navigate between these pages using the side menu bar.
+This Wtheq project is designed to implement a simple application with a two-side menu navigation system. The application consists of two main pages: the Profile page and the Payment page. Users can easily navigate between these pages using the side menu bar.
 
 ## User Story
 
@@ -12,6 +12,7 @@ As a user, I want to be able to:
 2. Enter credit card information on the Payment page, including Card Number, Expiry Date, Card Holder Name, and CVV.
 3. Navigate between the Profile and Payment pages using the side menu bar.
 4. Experience form validation to ensure the entered information is accurate and secure.
+5. Integrated with PayPal as a payment gateway.
 
 ## Project Structure
 
@@ -51,5 +52,17 @@ cd wtheq-task
 - Install dependencies:
 
 ```bash
-npm install
+yarn
+```
+
+- start project:
+
+```bash
+yarn dev
+```
+
+- build project:
+
+```bash
+yarn build
 ```
