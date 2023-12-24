@@ -1,15 +1,9 @@
 import { CreditCard } from "@/types/models";
-import paypal from "paypal-rest-sdk";
 
 import { NextRequest } from "next/server";
-import { convertToFourDigitYear } from "../../utils/date";
-import { _createPay } from "../../utils/paypal";
-
-paypal.configure({
-  mode: "sandbox", //sandbox or live
-  client_id: process.env.PAYPAL_CLIENT_ID,
-  client_secret: process.env.PAYPAL_CLIENT_SECRET,
-});
+import { convertToFourDigitYear } from "@/lib/utils/date";
+import paypalService from "@/services/paypal.service";
+import { SDKError } from "paypal-rest-sdk";
 
 export async function POST(req: NextRequest) {
   try {
@@ -63,19 +57,19 @@ export async function POST(req: NextRequest) {
       },
     };
 
-    await _createPay(paymentData);
+    const payment = await paypalService.createPay(paymentData);
 
     return Response.json(
-      { success: true, message: "Payment added successfully" },
+      { success: true, message: "Payment success", data: payment },
       { status: 200 }
     );
   } catch (error: any) {
     return Response.json(
       {
         success: false,
-        message: error.response.message || "Something went wrong",
+        message: (error as SDKError).response.message || "Something went wrong",
       },
-      { status: error.httpStatusCode || 500 }
+      { status: (error as SDKError).httpStatusCode || 500 }
     );
   }
 }
