@@ -20,25 +20,120 @@ The project structure is organized as follows:
 
 ```
 wtheq-task/
-|-- app/
-| |-- page.tsx (Home page)
-| |-- profile/ (Profile page)
-| |-- payment/ (Payment page)
-| | |-- page.tsx (Payment page)
-|-- components/
-| |-- SideMenu.tsx
-| |-- ProfileForm.tsx
-| |-- PaymentForm.tsx
-|-- styles/
-| |-- global.css
-|-- public/
-| |-- images/
-| |-- visa.png
-| |-- mastercard.png
-|-- README.md
-|-- package.json
-|-- ...
+.
+├── actions
+│   ├── auth.ts
+│   └── payment.ts
+├── app
+│   ├── api
+│   │   ├── payment
+│   │   │   └── add
+│   │   │       └── route.ts
+│   │   └── profile
+│   │       └── update
+│   │           └── route.ts
+│   ├── global-error.tsx
+│   ├── globals.css
+│   ├── layout.tsx
+│   ├── loading.tsx
+│   ├── not-found.tsx
+│   ├── page.tsx
+│   ├── payment
+│   │   ├── components
+│   │   │   └── PaymentForm
+│   │   │       └── index.tsx
+│   │   └── page.tsx
+│   └── profile
+│       ├── components
+│       │   └── ProfileForm
+│       │       └── index.tsx
+│       └── page.tsx
+├── lib
+│   ├── classes
+│   │   └── http-error.ts
+│   ├── hooks
+│   │   ├── usePaymentForm.tsx
+│   │   └── useProfileForm.tsx
+│   ├── ui
+│   │   ├── components
+│   │   │   ├── Button
+│   │   │   │   └── index.tsx
+│   │   │   ├── Header
+│   │   │   │   └── index.tsx
+│   │   │   ├── InputField
+│   │   │   │   └── index.tsx
+│   │   │   ├── Loaders
+│   │   │   │   ├── PageLoader
+│   │   │   │   │   └── index.tsx
+│   │   │   │   └── SidebarLoader
+│   │   │   │       └── index.tsx
+│   │   │   └── Sidebar
+│   │   │       ├── index.tsx
+│   │   │       └── SidebarNav.tsx
+│   │   └── layouts
+│   │       └── UserLayout
+│   │           └── index.tsx
+│   └── utils
+│       ├── date.ts
+│       ├── payment.ts
+│       └── string.ts
+├── next.config.js
+├── next-env.d.ts
+├── package.json
+├── postcss.config.js
+├── public
+│   └── images
+│       ├── american-express.svg
+│       ├── credit-card.png
+│       ├── mastercard.svg
+│       ├── unionpay.svg
+│       └── visa.svg
+├── README.md
+├── routes.ts
+├── services
+│   ├── http.service.ts
+│   ├── payment.service.ts
+│   ├── paypal.service.ts
+│   └── profile.service.ts
+├── tailwind.config.js
+├── tsconfig.json
+├── types
+│   ├── components
+│   │   ├── i-input.ts
+│   │   ├── i-payment-form.ts
+│   │   └── i-user-form.ts
+│   ├── env.d.ts
+│   ├── global
+│   │   └── index.ts
+│   ├── hooks
+│   │   └── i-use-payment.ts
+│   ├── models
+│   │   └── index.ts
+│   └── services
+│       └── index.ts
+└── yarn.lock
 ```
+
+**actions dir**  
+For server action functions that can be used in server-side and client-side
+
+**app dir**  
+Represent application views 
+
+**app/api dir**  
+Represent application api endpoints 
+
+**lib dir**  
+Represent application business logic (utility functions - global components - react hooks) 
+
+**services dir**  
+Contains api services or 3rd party services   
+
+**types dir**  
+Represent application types 
+
+**routes.ts file**  
+Application routes as constants 
 
 ## Getting Started
 
